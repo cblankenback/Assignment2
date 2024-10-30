@@ -1,5 +1,6 @@
 package com.cst3115.enterprise.assignment2
 
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -10,24 +11,29 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.Text
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextDirection.Companion.Content
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(onNavigateToSettings: () -> Unit = {}) {
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Weather App") },
+
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary),
+
                 actions = {
-                    IconButton(onClick = { navController.navigate("settings") }) {
+                    IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings")
                     }
                 }
@@ -49,9 +55,8 @@ fun MainScreen(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-
-    val navController = rememberNavController()
     MaterialTheme {
-        MainScreen(navController)
+        MainScreen()
     }
+
 }

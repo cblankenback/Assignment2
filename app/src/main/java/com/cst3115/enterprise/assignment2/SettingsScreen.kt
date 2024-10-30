@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 
 
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 
 
@@ -46,8 +47,13 @@ fun SettingsScreen(onNavigateBack: () -> Unit = {}) {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
-                }
-            )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary)
+
+                )
         }
     ) { contentPadding ->
         // Use the contentPadding parameter provided by Scaffold

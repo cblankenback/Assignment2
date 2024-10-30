@@ -1,6 +1,5 @@
 package com.cst3115.enterprise.assignment2
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 
@@ -8,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,13 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.*
-import androidx.navigation.compose.rememberNavController
 
 
-//@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(onNavigateBack: () -> Unit = {}) {
@@ -57,9 +56,11 @@ fun SettingsScreen(onNavigateBack: () -> Unit = {}) {
                 .padding(contentPadding) // Apply the contentPadding to the Column
                 .padding(16.dp) // Additional padding for layout
         ) {
-            Text(text = "Enter City Name")
-            Spacer(modifier = Modifier.height(8.dp))
+
             Text(text = "Current City = None")
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(text = "Enter City Name")
             Spacer(modifier = Modifier.height(8.dp))
             TextField(
                 value = cityName,

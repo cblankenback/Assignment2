@@ -68,7 +68,7 @@ fun SettingsScreen(onNavigateBack: () -> Unit = {}) {
                 .padding(contentPadding) // Apply the contentPadding to the Column
                 .padding(16.dp) // Additional padding for layout
         ) {
-            Text(text = "Current City: ${if (cityName.isNotEmpty()) cityName else "None"}")
+            Text(text = "Current City: ${cityName.ifEmpty { "None" }}")
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(text = "Enter City Name")

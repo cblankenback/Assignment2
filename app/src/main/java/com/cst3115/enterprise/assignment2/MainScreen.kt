@@ -136,6 +136,7 @@ fun MainScreen(
 
 data class DailyForecast(
     val date: String,
+    val dt_time: String,
     val temperature: Double,
     val description: String,
     val icon: String
@@ -155,6 +156,7 @@ fun getDailyForecasts(forecastResponse: ForecastResponse): List<DailyForecast> {
 
         DailyForecast(
             date = date,
+            dt_time = forecastAtNoon.dt_txt,
             temperature = forecastAtNoon.main.temp,
             description = forecastAtNoon.weather[0].description,
             icon = forecastAtNoon.weather[0].icon

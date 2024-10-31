@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.cst3115.enterprise.assignment2"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.cst3115.enterprise.assignment2"
@@ -68,4 +68,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Retrofit for network calls
+    implementation (libs.retrofit)
+
+    // Gson converter for JSON parsing
+    implementation (libs.converter.gson)
+
+    implementation ("io.coil-kt:coil-compose:2.7.0")
 }

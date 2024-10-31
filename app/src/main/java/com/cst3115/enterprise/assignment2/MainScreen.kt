@@ -1,7 +1,7 @@
 package com.cst3115.enterprise.assignment2
 
 
-import android.util.Log
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -31,8 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import androidx.compose.runtime.getValue
-import coil.ImageLoader
-import coil.util.DebugLogger
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,12 +81,8 @@ fun MainScreen(
             ) {
                 when {
                     weatherState != null && forecastState != null -> {
+                        val dailyForecasts = getDailyForecasts(forecastState!!)
                         Column(modifier = Modifier.padding(16.dp)) {
-                            val imageUrl = "https://openweathermap.org/img/wn/${weatherState!!.weather[0].icon}@2x.png"
-                            val imageLoader = ImageLoader.Builder(context)
-                                .logger(DebugLogger())
-                                .build()
-                            Text(text = "Image URL: $imageUrl")
                             Text(
                                 text = "Current Weather in ${weatherState!!.name}: ${weatherState!!.main.temp}°C",
                                 style = MaterialTheme.typography.headlineMedium
@@ -95,16 +90,8 @@ fun MainScreen(
                             Spacer(modifier = Modifier.height(8.dp))
                             AsyncImage(
                                 model = "https://openweathermap.org/img/wn/${weatherState!!.weather[0].icon}@2x.png",
-                                //model = "https://openweathermap.org/img/wn/04d@2x.png",
-                               // model = "https://www.color-hex.com/palettes/3595.png"
                                 contentDescription = null,
-                                modifier = Modifier.size(80.dp),
-                                imageLoader = imageLoader,
-                                onError = { error ->
-                                    //Text(text = "Image failed to load.")
-                                    Log.e("AsyncImage", "Error loading image: ${error.result.throwable}")
-                                }
-
+                                modifier = Modifier.size(80.dp)
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
@@ -113,15 +100,17 @@ fun MainScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             LazyColumn {
-                                items(forecastState!!.list) { item ->
+                                items(dailyForecasts) { item ->
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
                                         modifier = Modifier.padding(vertical = 4.dp)
                                     ) {
-                                        Text(text = "${item.dt_txt}: ${item.main.temp}°C, ${item.weather[0].description}")
+                                        Text(
+                                            text = "${item.date}: ${item.temperature}°C, ${item.description}"
+                                        )
                                         Spacer(modifier = Modifier.width(8.dp))
                                         AsyncImage(
-                                            model = "https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png",
+                                            model = "https://openweathermap.org/img/wn/${item.icon}@2x.png",
                                             contentDescription = null,
                                             modifier = Modifier.size(40.dp)
                                         )
@@ -144,6 +133,38 @@ fun MainScreen(
         }
     )
 }
+
+data class DailyForecast(
+    val date: String,
+    val temperature: Double,
+    val description: String,
+    val icon: String
+)
+
+fun getDailyForecasts(forecastResponse: ForecastResponse): List<DailyForecast> {
+    val groupedData = forecastResponse.list.groupBy { forecastItem ->
+        // Extract the date without time
+        forecastItem.dt_txt.substring(0, 10)
+    }
+
+    val dailyForecasts = groupedData.map { (date, forecasts) ->
+        // Find the forecast item closest to 12:00 PM
+        val targetTime = "12:00:00"
+        val forecastAtNoon = forecasts.find { it.dt_txt.contains(targetTime) }
+            ?: forecasts[forecasts.size / 2] // If no exact match, pick the middle item
+
+        DailyForecast(
+            date = date,
+            temperature = forecastAtNoon.main.temp,
+            description = forecastAtNoon.weather[0].description,
+            icon = forecastAtNoon.weather[0].icon
+        )
+    }
+
+    // Sort the list by date
+    return dailyForecasts.sortedBy { it.date }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {

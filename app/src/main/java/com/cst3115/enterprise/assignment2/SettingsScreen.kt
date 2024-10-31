@@ -1,5 +1,6 @@
 package com.cst3115.enterprise.assignment2
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 
@@ -30,14 +31,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
-
-
+import androidx.compose.ui.platform.LocalContext
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(onNavigateBack: () -> Unit = {}) {
     var cityName by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val preferencesManager = remember { PreferencesManager(context) }
+    // Initialize cityName with the saved value
+    LaunchedEffect(Unit) {
+        cityName = preferencesManager.getCityName() ?: ""
+    }
 
     Scaffold(
         topBar = {
@@ -62,8 +68,7 @@ fun SettingsScreen(onNavigateBack: () -> Unit = {}) {
                 .padding(contentPadding) // Apply the contentPadding to the Column
                 .padding(16.dp) // Additional padding for layout
         ) {
-
-            Text(text = "Current City = None")
+            Text(text = "Current City: ${if (cityName.isNotEmpty()) cityName else "None"}")
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(text = "Enter City Name")
@@ -77,7 +82,8 @@ fun SettingsScreen(onNavigateBack: () -> Unit = {}) {
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    // Save the city name to SharedPreferences or any other storage
+                    preferencesManager.saveCityName(cityName)
+                    Toast.makeText(context, "City saved!", Toast.LENGTH_SHORT).show()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

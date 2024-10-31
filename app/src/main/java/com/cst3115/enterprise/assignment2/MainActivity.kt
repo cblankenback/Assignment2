@@ -41,5 +41,8 @@ fun AppContent() {
                 }
             )
         }
+        composable("test_screen") {
+            TestScreen()
+        }
     }
 }

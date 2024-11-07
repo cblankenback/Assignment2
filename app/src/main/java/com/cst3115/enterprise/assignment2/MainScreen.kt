@@ -39,7 +39,6 @@ import androidx.compose.runtime.getValue
 @Composable
 fun MainScreen(
     onNavigateToSettings: () -> Unit = {},
-    onRefresh: () -> Unit = {},
     viewModel: MainViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -69,9 +68,6 @@ fun MainScreen(
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary),
 
                 actions = {
-                    IconButton(onClick = onRefresh) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
-                    }
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings")
                     }

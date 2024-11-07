@@ -40,7 +40,7 @@ import androidx.compose.runtime.getValue
 fun MainScreen(
     onNavigateToSettings: () -> Unit = {},
     onRefresh: () -> Unit = {},
-    viewModel: MainViewModel = viewModel()
+    viewModel: MainViewModel
 ) {
     val context = LocalContext.current
     val preferencesManager = remember { PreferencesManager(context) }

@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 class MainViewModel : ViewModel() {
 
@@ -28,8 +30,12 @@ class MainViewModel : ViewModel() {
                 _weatherState.value = weatherResponse
                 _forecastState.value = forecastResponse
                 _errorState.value = null
+            } catch (e: IOException) {
+                _errorState.value = "No internet connection."
+            } catch (e: HttpException) {
+                _errorState.value = "Error fetching data. Please try again later."
             } catch (e: Exception) {
-                _errorState.value = e.message
+                _errorState.value = "An unexpected error occurred."
             }
         }
     }

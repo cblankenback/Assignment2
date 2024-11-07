@@ -40,7 +40,7 @@ import androidx.compose.runtime.getValue
 fun MainScreen(
     onNavigateToSettings: () -> Unit = {},
     onRefresh: () -> Unit = {},
-    viewModel: MainViewModel
+    viewModel: MainViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val preferencesManager = remember { PreferencesManager(context) }
@@ -85,6 +85,15 @@ fun MainScreen(
                     .padding(innerPadding)
             ) {
                 when {
+                    errorState != null -> {
+                        Text(
+                            text = errorState ?: "An error occurred.",
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(16.dp)
+                        )
+                    }
                     weatherState != null && forecastState != null -> {
                         val dailyForecasts = getDailyForecasts(forecastState!!)
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -123,12 +132,6 @@ fun MainScreen(
                                 }
                             }
                         }
-                    }
-                    errorState != null -> {
-                        Text(
-                            text = "Error: ${errorState}",
-                            modifier = Modifier.padding(16.dp)
-                        )
                     }
                     else -> {
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

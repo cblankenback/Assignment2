@@ -31,4 +31,7 @@ class MainViewModel : ViewModel() {
             }
         }
     }
+    fun getSavedCityName(): String? {
+        return preferencesManager.getCityName()
+    }
 }

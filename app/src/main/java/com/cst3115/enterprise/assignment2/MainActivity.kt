@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.ViewModel
 
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -54,7 +55,7 @@ class WeatherWorker(context: Context, workerParams: WorkerParameters) : Worker(c
 @Composable
 fun AppContent() {
     val navController = rememberNavController()
-
+    val mainViewModel: MainViewModel = viewModel()
     NavHost(navController, startDestination = "main_screen") {
         composable("main_screen") {
             MainScreen(
@@ -62,10 +63,15 @@ fun AppContent() {
                     navController.navigate("settings_screen")
                 },
                 onRefresh = {
-                    // Implement your refresh logic here, e.g., re-fetch data
                     println("Refresh button clicked!")
-                    viewModel.fetchWeatherData("CityName")
-                }
+                    val savedCityName = mainViewModel.getSavedCityName()
+                    if (!savedCityName.isNullOrEmpty()) {
+                        mainViewModel.fetchWeatherData(savedCityName)
+                    } else {
+                        navController.navigate("settings_screen")
+                    }
+                },
+                viewModel = mainViewModel
             )
         }
         composable("settings_screen") {

@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,6 +39,7 @@ import androidx.compose.runtime.getValue
 @Composable
 fun MainScreen(
     onNavigateToSettings: () -> Unit = {},
+    onRefresh: () -> Unit = {},
     viewModel: MainViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -67,6 +69,9 @@ fun MainScreen(
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary),
 
                 actions = {
+                    IconButton(onClick = onRefresh) {
+                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                    }
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings")
                     }

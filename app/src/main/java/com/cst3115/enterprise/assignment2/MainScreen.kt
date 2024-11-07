@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -80,6 +81,15 @@ fun MainScreen(
                     .padding(innerPadding)
             ) {
                 when {
+                    errorState != null -> {
+                        Text(
+                            text = errorState ?: "An error occurred.",
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(16.dp)
+                        )
+                    }
                     weatherState != null && forecastState != null -> {
                         val dailyForecasts = getDailyForecasts(forecastState!!)
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -118,12 +128,6 @@ fun MainScreen(
                                 }
                             }
                         }
-                    }
-                    errorState != null -> {
-                        Text(
-                            text = "Error: ${errorState}",
-                            modifier = Modifier.padding(16.dp)
-                        )
                     }
                     else -> {
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

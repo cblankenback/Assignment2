@@ -19,13 +19,13 @@ This application uses the OpenWeatherMap API to fetch current weather and foreca
     val apiKey = "your_actual_api_key_here" // Replace with your actual API key
     ```
 
-> **⚠️ Security Note:** Storing API keys directly in the code is not recommended for production applications as it can expose sensitive information. Consider using secure storage solutions or environment variables to manage API keys safely.
+
 
 ## Example Usage
 - To get the current weather or a five-day forecast, use the following parameters:
   - `cityName`: The name of the city (e.g., "London").
   - `appid`: Your API key defined in the `MainViewModel`.
-  - `units`: (Optional) Measurement units. Use `"metric"` for Celsius or `"imperial"` for Fahrenheit.
+
 
 ---
 
